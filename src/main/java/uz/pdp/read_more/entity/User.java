@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 public class User extends AbsEntity {
     private String fullName;
+
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
 

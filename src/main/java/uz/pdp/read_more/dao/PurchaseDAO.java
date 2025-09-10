@@ -1,7 +1,5 @@
 package uz.pdp.read_more.dao;
 
-public class UserDAO {
+public class PurchaseDAO {
     private ManagementFactory mf = ManagementFactory.getInstance();
-
-
 }

@@ -1,7 +1,6 @@
 package uz.pdp.read_more.dao;
 
-public class UserDAO {
+public class AttachmentDAO {
     private ManagementFactory mf = ManagementFactory.getInstance();
-
 
 }
