@@ -3,10 +3,12 @@ package uz.pdp.read_more.dao;
 import jakarta.persistence.EntityManager;
 import uz.pdp.read_more.entity.User;
 
+import java.util.Optional;
+
 public class UserDAO {
     private ManagementFactory mf = ManagementFactory.getInstance();
 
-    public void saveUser(User user) {
+    public void save(User user) {
         EntityManager entityManager = mf.getEntityManager();
         entityManager
                 .getTransaction()
@@ -23,7 +25,7 @@ public class UserDAO {
     }
 
 
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         User user = null;
         EntityManager entityManager = mf.getEntityManager();
         entityManager
@@ -39,11 +41,10 @@ public class UserDAO {
                 .commit();
         entityManager.close();
 
-        return user;
-
+        return Optional.of(user);
     }
 
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         User user = null;
         EntityManager entityManager = mf.getEntityManager();
         entityManager
@@ -56,7 +57,7 @@ public class UserDAO {
         entityManager
                 .clear();
         entityManager.close();
-        return user;
+        return Optional.of(user);
     }
 
     private static UserDAO instance;
