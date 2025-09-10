@@ -17,7 +17,10 @@ public class User extends AbsEntity {
     private String fullName;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
     private BigDecimal balance = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

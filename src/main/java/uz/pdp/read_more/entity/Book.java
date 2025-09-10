@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uz.pdp.read_more.entity.abs.AbsEntity;
-import uz.pdp.read_more.entity.enums.BookType;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,18 +15,16 @@ import java.util.List;
 public class Book extends AbsEntity {
     private String title;
     private String author;
+    private String genre;
 
     @Column(length = 2000)
     private String description;
 
     private BigDecimal price;
 
-    private String coverImage;   // rasm yo‘li
-    private String filePath;     // PDF yoki audio fayl yo‘li
-
-    @Enumerated(EnumType.STRING)
-    private BookType type;       // PDF yoki AUDIO
-
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchases;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attachment> attachments;
 }

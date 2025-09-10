@@ -1,32 +1,25 @@
 package uz.pdp.read_more.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
+import lombok.EqualsAndHashCode;
 import uz.pdp.read_more.entity.abs.AbsEntity;
-import uz.pdp.read_more.entity.enums.BookType;
+import uz.pdp.read_more.entity.enums.AttachmentType;
 
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@Table(name = "attachment")
 public class Attachment extends AbsEntity {
-
     private String filePath;
-
     private String fileName;
-
-    @Enumerated(EnumType.STRING)
-    private BookType suffix;
-
     private Long fileSize;
 
+    @Enumerated(EnumType.STRING)
+    private AttachmentType type;
+
     @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 }
-
-
-
-
