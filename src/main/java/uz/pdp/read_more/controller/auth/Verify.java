@@ -5,6 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import uz.pdp.read_more.dao.UserDAO;
+import uz.pdp.read_more.dto.RegisterDto;
+import uz.pdp.read_more.entity.User;
 
 import java.io.IOException;
 
@@ -13,13 +17,34 @@ import java.io.IOException;
 public class Verify extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+//        req.getRequestDispatcher().forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String code = req.getParameter("code");
-        System.out.println("code: " + code);
+        Integer code = Integer.parseInt(req.getParameter("code"));
+        HttpSession session = req.getSession();
+        Object object = session.getAttribute("registerDTO");
+        if (object == null) {
+            resp.sendRedirect("/auth/register.jsp");
+            return;
+        }
+
+        RegisterDto registerDto = (RegisterDto) object;
+        if (!registerDto.getOtp().equals(code)) {
+            resp.sendRedirect("/auth/register.jsp");
+            return;
+        }
+
+        User user = User.builder()
+                .fullName(registerDto.getFullName())
+                .email(registerDto.getEmail())
+                .password(registerDto.getPassword())
+
+                .build();
+
+        UserDAO.getInstance().save(user);
+        resp.sendRedirect("/auth/login.jsp");
 
     }
 }

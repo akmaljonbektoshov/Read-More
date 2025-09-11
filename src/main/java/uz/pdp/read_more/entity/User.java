@@ -1,6 +1,7 @@
 package uz.pdp.read_more.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uz.pdp.read_more.entity.abs.AbsEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@Builder
 public class User extends AbsEntity {
     private String fullName;
 
