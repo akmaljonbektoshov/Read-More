@@ -1,23 +1,23 @@
 package uz.pdp.read_more.dao;
 
 import jakarta.persistence.EntityManager;
+import uz.pdp.read_more.dao.entity_manager.ManagementFactory;
 import uz.pdp.read_more.entity.Book;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookDAO {
-    private ManagementFactory mf = ManagementFactory.getInstance();
+    private final ManagementFactory mf = ManagementFactory.getInstance();
 
     public void save(Book book) {
         EntityManager entityManager = mf.getEntityManager();
+
         entityManager
                 .getTransaction()
                 .begin();
 
-        entityManager
-                .persist(book);
+        entityManager.persist(book);
 
         entityManager
                 .getTransaction()
@@ -28,41 +28,39 @@ public class BookDAO {
 
     public List<Book> findAllByNameContaining(String title) {
         EntityManager entityManager = mf.getEntityManager();
-        List<Book> books = new ArrayList<>();
-        try {
-            books = entityManager
+
+        List<Book> books = entityManager
                     .createQuery("SELECT b FROM Book b WHERE LOWER(b.title) LIKE LOWER(:title)", Book.class)
                     .setParameter("title", "%" + title + "%")
                     .getResultList();
-        } finally {
-            entityManager.close();
-        }
+
+        entityManager.close();
         return books;
     }
 
-
     public Optional<Book> findById(Long id) {
-        Book  book= null;
         EntityManager entityManager = mf.getEntityManager();
+
         entityManager
-                .getTransaction().begin();
-        book = entityManager
-                .find(Book.class, id);
+                .getTransaction()
+                .begin();
+
+        Book  book = entityManager.find(Book.class, id);
+
         entityManager
                 .getTransaction()
                 .commit();
-        entityManager
-                .clear();
+
         entityManager.close();
-        return Optional.of(book);
+        return Optional.ofNullable(book);
     }
 
-    private static BookDAO instance;
-
+    private BookDAO() {}
+    private static BookDAO bookDAO;
     public static BookDAO getInstance() {
-        if (instance == null) {
-            instance = new BookDAO();
+        if (bookDAO == null) {
+            bookDAO = new BookDAO();
         }
-        return instance;
+        return bookDAO;
     }
 }

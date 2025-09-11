@@ -1,4 +1,4 @@
-package uz.pdp.read_more.dao;
+package uz.pdp.read_more.dao.entity_manager;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

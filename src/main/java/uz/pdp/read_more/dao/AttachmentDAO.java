@@ -1,26 +1,45 @@
 package uz.pdp.read_more.dao;
 
 import jakarta.persistence.EntityManager;
+import uz.pdp.read_more.dao.entity_manager.ManagementFactory;
 import uz.pdp.read_more.entity.Attachment;
 
+import java.util.Optional;
+
 public class AttachmentDAO {
-    private ManagementFactory mf = ManagementFactory.getInstance();
+    private final ManagementFactory mf = ManagementFactory.getInstance();
 
     public void save(Attachment attachment) {
-        EntityManager em = mf.getEntityManager();
-        em.getTransaction().begin();
-        em.persist(attachment);
-        em.getTransaction().commit();
-        em.close();
+        EntityManager entityManager = mf.getEntityManager();
+
+        entityManager
+                .getTransaction()
+                .begin();
+
+        entityManager.persist(attachment);
+
+        entityManager
+                .getTransaction()
+                .commit();
+
+        entityManager.close();
     }
 
-    public Attachment findById(long id) {
-        EntityManager em = mf.getEntityManager();
-        em.getTransaction().begin();
-        Attachment attachment = em.find(Attachment.class, id);
-        em.getTransaction().commit();
-        em.close();
-        return attachment;
+    public Optional<Attachment> findById(long id) {
+        EntityManager entityManager = mf.getEntityManager();
+
+        entityManager
+                .getTransaction()
+                .begin();
+
+        Attachment attachment = entityManager.find(Attachment.class, id);
+
+        entityManager
+                .getTransaction()
+                .commit();
+
+        entityManager.close();
+        return Optional.ofNullable(attachment);
     }
 
     private AttachmentDAO() {
