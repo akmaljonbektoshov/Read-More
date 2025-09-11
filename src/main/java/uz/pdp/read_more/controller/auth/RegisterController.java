@@ -16,7 +16,7 @@ import java.util.Random;
 public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/auth/register.jsp").forward(req, resp);
+        req.getRequestDispatcher("/register").forward(req, resp);
     }
 
     @Override
@@ -28,11 +28,11 @@ public class RegisterController extends HttpServlet {
         registerDto.setOtp(randomCode);
         req.getSession().setAttribute("registerDto", registerDto);
 
-        Thread thread = new Thread(() -> {
-            MailService.sendCode(registerDto.getEmail(), registerDto.getOtp());
-        });
+        Thread thread = new Thread(() ->
+                MailService.sendCode(registerDto.getEmail(), registerDto.getOtp())
+        );
         thread.start();
 
-        req.getRequestDispatcher("/auth/verify.jsp").forward(req, resp);
+        req.getRequestDispatcher("/verify").forward(req, resp);
     }
 }

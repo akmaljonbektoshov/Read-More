@@ -16,7 +16,7 @@ import java.util.Optional;
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/auth/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/login").forward(req, resp);
     }
 
     @Override
@@ -26,15 +26,15 @@ public class LoginController extends HttpServlet {
 
         Optional<User> userOptional = UserDAO.getInstance().findByEmail(email);
         if (!userOptional.isPresent()) {
-            resp.sendRedirect("/auth/login.jsp");
+            resp.sendRedirect("/login");
         }
         User user = userOptional.get();
         if (!password.equals(user.getPassword())) {
-            resp.sendRedirect("/auth/login.jsp");
+            resp.sendRedirect("/login");
             return;
         }
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
-        resp.sendRedirect("/cabinet.jsp");
+        resp.sendRedirect("/cabinet");
     }
 }
