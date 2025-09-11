@@ -1,9 +1,7 @@
 package uz.pdp.read_more.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import uz.pdp.read_more.entity.abs.AbsEntity;
 import uz.pdp.read_more.entity.enums.Role;
 
@@ -14,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@AllArgsConstructor
 @Builder
 public class User extends AbsEntity {
     private String fullName;
@@ -29,4 +28,8 @@ public class User extends AbsEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Purchase> purchases;
+
+    public User() {
+
+    }
 }

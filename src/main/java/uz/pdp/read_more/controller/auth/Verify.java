@@ -24,15 +24,15 @@ public class Verify extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Integer code = Integer.parseInt(req.getParameter("code"));
         HttpSession session = req.getSession();
-        Object object = session.getAttribute("registerDTO");
+        Object object = session.getAttribute("registerDto");
         if (object == null) {
-            resp.sendRedirect("/auth/register.jsp");
+            resp.sendRedirect("/register");
             return;
         }
 
         RegisterDto registerDto = (RegisterDto) object;
         if (!registerDto.getOtp().equals(code)) {
-            resp.sendRedirect("/auth/register.jsp");
+            resp.sendRedirect("/login");
             return;
         }
 
@@ -44,7 +44,7 @@ public class Verify extends HttpServlet {
                 .build();
 
         UserDAO.getInstance().save(user);
-        resp.sendRedirect("/auth/login.jsp");
+        resp.sendRedirect("/login");
 
     }
 }
