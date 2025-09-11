@@ -2,11 +2,13 @@ package uz.pdp.read_more.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uz.pdp.read_more.entity.abs.AbsEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Table(name = "purchase")
