@@ -7,7 +7,7 @@ import uz.pdp.read_more.entity.Book;
 import java.util.List;
 import java.util.Optional;
 
-public class BookDAO {
+public class    BookDAO {
     private final ManagementFactory mf = ManagementFactory.getInstance();
 
     public void save(Book book) {
