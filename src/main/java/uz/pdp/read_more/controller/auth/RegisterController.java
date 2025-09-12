@@ -1,6 +1,5 @@
 package uz.pdp.read_more.controller.auth;
 
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
