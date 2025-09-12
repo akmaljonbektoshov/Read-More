@@ -11,6 +11,14 @@
     <title>Title</title>
 </head>
 <body>
+<%
+    Object user = session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("/auth/login.jsp");
+        return;
+    }
+%>
+
 <h1>cabinetjonda test shunchaki</h1>
 </body>
 </html>
