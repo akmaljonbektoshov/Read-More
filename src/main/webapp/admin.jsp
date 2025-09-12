@@ -138,7 +138,7 @@
                                             <i class="bi bi-trash"></i> Delete
                                         </button>
 
-                                        <a class="btn btn-sm btn-outline-info" href="${pageContext.request.contextPath}/book?id=${book.id}">
+                                        <a class="btn btn-sm btn-outline-info" href="">
                                             <i class="bi bi-eye"></i> View
                                         </a>
                                     </div>
