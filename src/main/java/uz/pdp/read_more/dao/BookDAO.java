@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import uz.pdp.read_more.dao.entity_manager.ManagementFactory;
 import uz.pdp.read_more.entity.Book;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,19 +93,24 @@ public class BookDAO {
         entityManager.close();
     }
 
-
     public List<Book> findAll(int page, int size) {
-        EntityManager entityManager = mf.getEntityManager();
+        EntityManager em = mf.getEntityManager();
+        try {
+            List<Book> books = em.createQuery("SELECT b FROM Book b ORDER BY b.id DESC", Book.class)
+                    .setFirstResult((page - 1) * size)
+                    .setMaxResults(size)
+                    .getResultList();
 
-        List<Book> books = entityManager
-                .createQuery("SELECT b FROM Book b", Book.class)
-                .setFirstResult((page - 1) * size)
-                .setMaxResults(size)
-                .getResultList();
-
-        entityManager.close();
-        return books;
+            // initialize lazy collections
+            for (Book b : books) {
+                if (b.getAttachments() != null) b.getAttachments().size();
+            }
+            return books;
+        } finally {
+            em.close();
+        }
     }
+
 
 
     public Long count() {
@@ -118,5 +124,16 @@ public class BookDAO {
         return total;
     }
 
+    public List<Book> findAllBooks() {
 
+        EntityManager entityManager = mf.getEntityManager();
+        entityManager.getTransaction().begin();
+        List<Book> books = entityManager
+                .createQuery("SELECT b FROM Book b", Book.class)
+                .getResultList();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return books;
+
+    }
 }
