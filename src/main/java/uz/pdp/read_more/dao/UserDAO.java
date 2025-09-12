@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import uz.pdp.read_more.dao.entity_manager.ManagementFactory;
 import uz.pdp.read_more.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserDAO {
@@ -29,22 +30,26 @@ public class UserDAO {
     public Optional<User> findByEmail(String email) {
         EntityManager entityManager = mf.getEntityManager();
 
-        entityManager
-                .getTransaction()
-                .begin();
+        try {
+            entityManager.getTransaction().begin();
 
-        User user = entityManager
-                .createQuery("select u from User u where u.email = :email", User.class)
-                .setParameter("email", email)
-                .getSingleResult();
+            List<User> users = entityManager
+                    .createQuery("select u from User u where u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .getResultList();
 
-        entityManager
-                .getTransaction()
-                .commit();
+            entityManager.getTransaction().commit();
 
-        entityManager.close();
-        return Optional.ofNullable(user);
+            if (users.isEmpty()) {
+                return Optional.empty();
+            }
+            return Optional.of(users.get(0));
+
+        } finally {
+            entityManager.close();
+        }
     }
+
 
     public Optional<User> findById(Long id) {
         EntityManager entityManager = mf.getEntityManager();
