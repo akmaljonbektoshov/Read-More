@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import uz.pdp.read_more.dao.UserDAO;
 import uz.pdp.read_more.entity.User;
+import uz.pdp.read_more.entity.enums.Role;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -36,6 +37,11 @@ public class LoginController extends HttpServlet {
         }
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
-        resp.sendRedirect("/cabinet.jsp");
+        if (user.getRole() == Role.USER) {
+            resp.sendRedirect("/cabinet.jsp");
+            return;
+        }else {
+            resp.sendRedirect("/admin.jsp");
+        }
     }
 }

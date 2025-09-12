@@ -24,12 +24,20 @@ public class User extends AbsEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private BigDecimal balance = BigDecimal.ZERO;
+    private Double balance = 0.0;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Purchase> purchases;
 
     public User() {
 
+    }
+
+    public User(String fullName, String email, String password, Role role, Double balance) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.balance = balance;
     }
 }

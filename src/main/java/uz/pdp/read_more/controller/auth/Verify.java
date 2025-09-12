@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import uz.pdp.read_more.dao.UserDAO;
 import uz.pdp.read_more.dto.RegisterDto;
 import uz.pdp.read_more.entity.User;
+import uz.pdp.read_more.entity.enums.Role;
 
 import java.io.IOException;
 
@@ -22,7 +23,15 @@ public class Verify extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer code = Integer.parseInt(req.getParameter("code"));
+        String codeStr = req.getParameter("code");
+
+        if (codeStr == null || codeStr.isEmpty()) {
+            resp.sendRedirect("/auth/verify.jsp");
+            return;
+        }
+
+        Integer code = Integer.parseInt(codeStr);
+
         HttpSession session = req.getSession();
         Object object = session.getAttribute("registerDTO");
         if (object == null) {
@@ -40,7 +49,7 @@ public class Verify extends HttpServlet {
                 .fullName(registerDto.getFullName())
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
-
+                .role(Role.USER)
                 .build();
 
         UserDAO.getInstance().save(user);
