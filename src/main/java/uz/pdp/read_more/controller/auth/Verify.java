@@ -12,6 +12,7 @@ import uz.pdp.read_more.entity.User;
 
 import java.io.IOException;
 
+
 @WebServlet("/verify")
 public class Verify extends HttpServlet {
     @Override
@@ -44,5 +45,6 @@ public class Verify extends HttpServlet {
 
         UserDAO.getInstance().save(user);
         resp.sendRedirect("/auth/login.jsp");
+
     }
 }
