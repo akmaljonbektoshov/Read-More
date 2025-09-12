@@ -16,7 +16,7 @@ import java.util.Optional;
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/login").forward(req, resp);
+        req.getRequestDispatcher("/auth/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class LoginController extends HttpServlet {
         if (!userOptional.isPresent()) {
             resp.sendRedirect("/login");
         }
-        User user = userOptional.get();
+        User user = userOptional.orElseThrow();
         if (!password.equals(user.getPassword())) {
             resp.sendRedirect("/login");
             return;
