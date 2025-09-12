@@ -25,8 +25,20 @@
             color: #777;
             font-size: 12px;
         }
-        .desc-small { max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        footer.site-footer { background: #212529; color: #fff; padding: 12px 0; margin-top: 24px; }
+
+        .desc-small {
+            max-width: 320px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        footer.site-footer {
+            background: #212529;
+            color: #fff;
+            padding: 12px 0;
+            margin-top: 24px;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -47,8 +59,10 @@
         <h4 class="mb-0">Kitoblarni boshqarish</h4>
         <div class="d-flex align-items-center">
             <form class="d-flex" action="${pageContext.request.contextPath}/admin/books" method="get">
-                <input name="q" value="${fn:escapeXml(param.q)}" class="form-control form-control-sm me-2" placeholder="Title yoki author bo‘yicha qidirish">
-                <button class="btn btn-sm btn-outline-primary me-3" type="submit"><i class="bi bi-search"></i> Qidir</button>
+                <input name="q" value="${fn:escapeXml(param.q)}" class="form-control form-control-sm me-2"
+                       placeholder="Title yoki author bo‘yicha qidirish">
+                <button class="btn btn-sm btn-outline-primary me-3" type="submit"><i class="bi bi-search"></i> Qidir
+                </button>
             </form>
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBookModal">
                 <i class="bi bi-plus-lg"></i> Kitob qo'shish
@@ -76,11 +90,12 @@
                     <c:when test="${not empty books}">
                         <c:forEach var="book" items="${books}">
                             <tr>
+                                <!-- Image -->
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty book.attachments and fn:length(book.attachments) > 0}">
-                                            <img src="${book.attachments[0].url}"
-                                                 alt="${book.title}"
+                                            <img src="${pageContext.request.contextPath}${book.attachments[0].filePath}"
+                                                 alt="${fn:escapeXml(book.title)}"
                                                  class="thumb"/>
                                         </c:when>
                                         <c:otherwise>
@@ -89,35 +104,39 @@
                                     </c:choose>
                                 </td>
 
-                                <strong>${fn:escapeXml(book.title)}</strong><br/>
+                                <!-- Title + author -->
+                                <td>
+                                    <strong>${fn:escapeXml(book.title)}</strong><br/>
                                     <small class="text-muted">${fn:escapeXml(book.author)}</small>
                                 </td>
 
+                                <!-- Author -->
                                 <td>${fn:escapeXml(book.author)}</td>
+
+                                <!-- Genre -->
                                 <td>${fn:escapeXml(book.genre)}</td>
 
+                                <!-- Price -->
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty book.price}">
                                             ${book.price}
                                         </c:when>
-                                        <c:otherwise>
-                                            -
-                                        </c:otherwise>
+                                        <c:otherwise>-</c:otherwise>
                                     </c:choose>
                                 </td>
 
+                                <!-- Description -->
                                 <td class="desc-small">
                                     <c:choose>
                                         <c:when test="${not empty book.description}">
                                             ${fn:escapeXml(book.description)}
                                         </c:when>
-                                        <c:otherwise>
-                                            -
-                                        </c:otherwise>
+                                        <c:otherwise>-</c:otherwise>
                                     </c:choose>
                                 </td>
 
+                                <!-- Actions -->
                                 <td>
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-outline-warning editBtn"
@@ -138,7 +157,8 @@
                                             <i class="bi bi-trash"></i> Delete
                                         </button>
 
-                                        <a class="btn btn-sm btn-outline-info" href="${pageContext.request.contextPath}/book?id=${book.id}">
+                                        <a class="btn btn-sm btn-outline-info"
+                                           href="${pageContext.request.contextPath}/book?id=${book.id}">
                                             <i class="bi bi-eye"></i> View
                                         </a>
                                     </div>
@@ -154,6 +174,7 @@
                 </c:choose>
                 </tbody>
             </table>
+
         </div>
 
         <!-- pagination -->
@@ -164,17 +185,20 @@
             <nav>
                 <ul class="pagination mb-0">
                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="${pageContext.request.contextPath}/admin/books?page=${currentPage - 1}&q=${fn:escapeXml(param.q)}">«</a>
+                        <a class="page-link"
+                           href="${pageContext.request.contextPath}/admin/books?page=${currentPage - 1}&q=${fn:escapeXml(param.q)}">«</a>
                     </li>
 
                     <c:forEach var="i" begin="1" end="${totalPages}">
                         <li class="page-item ${i == currentPage ? 'active' : ''}">
-                            <a class="page-link" href="${pageContext.request.contextPath}/admin/books?page=${i}&q=${fn:escapeXml(param.q)}">${i}</a>
+                            <a class="page-link"
+                               href="${pageContext.request.contextPath}/admin/books?page=${i}&q=${fn:escapeXml(param.q)}">${i}</a>
                         </li>
                     </c:forEach>
 
                     <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                        <a class="page-link" href="${pageContext.request.contextPath}/admin/books?page=${currentPage + 1}&q=${fn:escapeXml(param.q)}">»</a>
+                        <a class="page-link"
+                           href="${pageContext.request.contextPath}/admin/books?page=${currentPage + 1}&q=${fn:escapeXml(param.q)}">»</a>
                     </li>
                 </ul>
             </nav>
@@ -227,7 +251,8 @@
 <!-- Edit Book Modal -->
 <div class="modal fade" id="editBookModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form id="editBookForm" action="${pageContext.request.contextPath}/admin/books" method="post" class="modal-content">
+        <form id="editBookForm" action="${pageContext.request.contextPath}/admin/books" method="post"
+              class="modal-content">
             <input type="hidden" name="action" value="update"/>
             <input type="hidden" name="id" id="edit-id"/>
             <input type="hidden" name="currentPage" value="${currentPage}"/>
@@ -270,7 +295,8 @@
 <!-- Delete Confirm Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form id="deleteForm" action="${pageContext.request.contextPath}/admin/books" method="post" class="modal-content">
+        <form id="deleteForm" action="${pageContext.request.contextPath}/admin/books" method="post"
+              class="modal-content">
             <input type="hidden" name="action" value="delete"/>
             <input type="hidden" name="id" id="delete-id"/>
             <input type="hidden" name="currentPage" value="${currentPage}"/>
