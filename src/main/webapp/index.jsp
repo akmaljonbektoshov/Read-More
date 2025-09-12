@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Sultan Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bookstore Navbar Demo</title>
@@ -76,6 +79,12 @@
                     </button>
                 </div>
 
+<h1><%= "Hello World!" %>
+</h1>
+<br/>
+<a href="hello-servlet">Hello Servlet</a>
+<a href="auth/register.jsp" class="btn btn-outline-dark">registerga utish</a>
+<a href="auth/login.jsp" class="btn btn-outline-dark">loginga utish</a>
                 <!-- User Cabinet -->
                 <div class="dropdown">
                     <button class="btn p-2 dropdown-toggle" data-bs-toggle="dropdown" style="color: white !important; background-color: transparent !important; border: none;">

@@ -26,15 +26,16 @@ public class LoginController extends HttpServlet {
 
         Optional<User> userOptional = UserDAO.getInstance().findByEmail(email);
         if (!userOptional.isPresent()) {
-            resp.sendRedirect("/login");
+            resp.sendRedirect("/auth/login.jsp");
+            return;
         }
         User user = userOptional.orElseThrow();
         if (!password.equals(user.getPassword())) {
-            resp.sendRedirect("/login");
+            resp.sendRedirect("/auth/login.jsp");
             return;
         }
         HttpSession session = req.getSession();
         session.setAttribute("user", user);
-        resp.sendRedirect("/cabinet");
+        resp.sendRedirect("/cabinet.jsp");
     }
 }
